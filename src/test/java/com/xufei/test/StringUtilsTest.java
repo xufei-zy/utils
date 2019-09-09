@@ -1,12 +1,11 @@
 package com.xufei.test;
 
-import java.util.Random;
-
 import org.junit.Test;
 
 import com.xufei.utils.StringUtils;
 
 public class StringUtilsTest {
+	
 	
 	@Test
 	public void testisNull() {
@@ -53,5 +52,11 @@ public class StringUtilsTest {
 		//int nextInt = random.nextInt(26);
 		String randomChinese = StringUtils.getRandomChinese(7);
 		System.out.println(randomChinese);
+	}
+	
+	@Test
+	public void testtoHtml() {
+		String html = StringUtils.toHtml("如果自己的工具包工程没有该功能的工具方法，考试现在编写不扣分。如果有此功能的方法，但方法名不同不影响成绩。");
+		System.out.println(html);
 	}
 }

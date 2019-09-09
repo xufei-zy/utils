@@ -7,6 +7,31 @@ import java.util.regex.Pattern;
 public class StringUtils {
 	
 	/**
+	 * 3.在工具包工程里添加一个字符串toHtml(String text)工具方法。思路是
+		(1)利用Html的<p>标签来保留文本的换行。
+		(2)Windows系统换行符是“\r\n”,Linux系统是“\n”，因此要将\n\r替换成一个\n。
+		(3)再将\n结尾的这行文本用<p></p>标签包起来。
+		(4)如果遇到单个\r字符要使用<br/>标签替换。
+	 * @param text
+	 * @return
+	 */
+	public static String toHtml(String text) {
+		StringBuffer buffer = new StringBuffer();
+		String[] split = text.split("(\r\n)");
+		for (String string : split) {
+			//(3)再将\n结尾的这行文本用<p></p>标签包起来。
+			buffer.append("<P>");
+			//(2)Windows系统换行符是“\r\n”,Linux系统是“\n”，因此要将\n\r替换成一个\n。
+			string.replaceAll("\r\n", "\n");
+			//(4)如果遇到单个\r字符要使用<br/>标签替换。
+			string.replaceAll("\r", "<br/>");
+			buffer.append("</P>");
+		}
+		return buffer.toString();
+		
+	}
+	
+	/**
 	 * 判断源字符串是否有值，空字符串也算没值
 	 */
 	public static boolean isNull(String str) {
@@ -67,6 +92,19 @@ public class StringUtils {
 			return false;
 		}
 		Pattern pattern = Pattern.compile("^[a-zA-Z]+$");
+		Matcher matcher = pattern.matcher(str);
+		if(matcher.matches()) {
+			return true;
+		}
+		return false;
+	}
+	
+	public static boolean isNumber(String str) {
+		boolean blank = isBlank(str);
+		if(!blank) {
+			return false;
+		}
+		Pattern pattern = Pattern.compile("^[0-9]+$");
 		Matcher matcher = pattern.matcher(str);
 		if(matcher.matches()) {
 			return true;
@@ -151,4 +189,16 @@ public class StringUtils {
 		}
 		return buffer.toString();
 	}
+	
+	public static String getPartString(String str) {
+		Pattern pattern = Pattern.compile("\\d{7}");
+		Matcher matcher = pattern.matcher(str);
+		String group="";
+		while(matcher.find()) {
+			group = matcher.group();
+		}
+		return group;
+	}
+	
+	
 }
