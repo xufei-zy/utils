@@ -11,4 +11,12 @@ public class FileUtilsTest {
 		String suffixName = FileUtils.getSuffixName("C:\\Dell\\UW.cmd");
 		System.out.println(suffixName);
 	}
+	
+	@Test
+	public void testdeleteFiles() {
+		String homeDirectory = FileUtils.getHomeDirectory();
+		String workDirectory = FileUtils.getWorkDirectory();
+		System.out.println(homeDirectory);
+		System.out.println(workDirectory);
+	}
 }

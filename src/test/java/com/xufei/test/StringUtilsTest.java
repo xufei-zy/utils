@@ -53,7 +53,8 @@ public class StringUtilsTest {
 		String randomChinese = StringUtils.getRandomChinese(7);
 		System.out.println(randomChinese);
 	}
-	
+	//4.在src/test/java包下测试工具方法。
+	//5.将工具包工程新编写的代码提交到远程GIT仓库。
 	@Test
 	public void testtoHtml() {
 		String html = StringUtils.toHtml("如果自己的工具包工程没有该功能的工具方法，考试现在编写不扣分。如果有此功能的方法，但方法名不同不影响成绩。");
