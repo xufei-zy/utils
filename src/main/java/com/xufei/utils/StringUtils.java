@@ -137,6 +137,18 @@ public class StringUtils {
 			buffer.append(str);
 		}
 		return buffer.toString();
-		
+	}
+	
+	
+	public static String replaceStr(String str) {
+		StringBuffer buffer = new StringBuffer();
+		String[] split = str.split("(\r\n)");
+		for (String string : split) {
+			buffer.append("<P>");
+			String replaceAll = string.replaceAll("(\r)", "<br>");
+			buffer.append(replaceAll);
+			buffer.append("</P>   ");
+		}
+		return buffer.toString();
 	}
 }
