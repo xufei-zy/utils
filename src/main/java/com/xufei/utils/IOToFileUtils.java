@@ -12,6 +12,8 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.RandomAccessFile;
 import java.io.Reader;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Java读取文件工具类——IO
@@ -134,6 +136,65 @@ public class IOToFileUtils {
             }
         }
     }
+    public static List<String> readFileByCharsList(String fileName){
+    	File file = new File(fileName);
+    	Reader reader = null;
+    	List<String> strList =new ArrayList<>();
+    	try{
+    		System.out.println("以字符为单位读取文件内容，一次读取一个字符：");
+    		//一次读取一个字符
+    		reader = new InputStreamReader(new FileInputStream(file));
+    		int tempchar;
+    		while((tempchar=reader.read())!= -1){
+    			//对于window下，/r/n这两个字符在一起时，表示一个换行。
+    			//但如果这两个字符分开显示是，会换两次行。
+    			//因此，屏蔽掉/r,或者屏蔽/n。否则，将会多出很多空行
+    			if(((char)tempchar)!= '\r'){
+    				//System.out.print((char)tempchar);
+    				strList.add(tempchar+"");
+    			}
+    		}
+    		reader.close();
+    	}catch(Exception e){
+    		e.printStackTrace();  
+    	}
+    	try{
+    		System.out.println("以字符为单位读取文件内容，一次读取多个字符：");
+    		//一次读取多个字符
+    		char[] tempchars = new char[30];
+    		int charread = 0;
+    		reader = new InputStreamReader(new FileInputStream(fileName));
+    		//读取多个字符到字符数组中，charread为一次读取字符数
+    		while((charread=reader.read(tempchars))!=-1){
+    			//屏蔽掉/r不显示
+    			if((charread == tempchars.length) && (tempchars[tempchars.length-1]!='\r')){
+    				//System.out.print(tempchars);
+    				strList.add(tempchars+"");
+    			}else{
+    				for(int i=0;i<charread;i++){
+    					if(tempchars[i] == '\r'){
+    						continue;
+    					}else{
+    						//System.out.print(tempchars[i]);
+    						strList.add(tempchars[i]+"");
+    					}
+    				}
+    			}
+    		}
+    	}catch(Exception e){
+    		e.printStackTrace();
+    	}finally{
+    		if(reader != null){
+    			try {
+    				reader.close();
+    			} catch (IOException e) {
+    				e.printStackTrace();
+    			}
+    		}
+    	}
+    	
+    	return strList;
+    }
 
     /**
      * 以行为单位读取文件，常用于读取面向行的格式化文件
@@ -163,7 +224,31 @@ public class IOToFileUtils {
             e.printStackTrace();
         }
     }
+    
+    public static List<String> readFileByLinesList(String fileName){
+    	File file = new File(fileName);
+    	BufferedReader reader = null;
+    	List<String> strList=new ArrayList<>();
+    	try{
+    		System.out.println("以行为单位读取文件内容，一次读取一整行：");
+    		reader = new BufferedReader(new FileReader(file));
+    		String tempString = null;
+    		int line = 1;
+    		//一次读入一行，直到读入null为文件结束
+    		while((tempString = reader.readLine())!=null){
+    			//显示行号
+    			//System.out.println("line "+line+":"+tempString);
+    			strList.add(tempString);
+    			//line++;
+    		}
+    		reader.close();
+    	}catch(Exception e){
+    		e.printStackTrace();
+    	}
+		return strList;
+    }
 
+    
     /**
      * 随机读取文件内容
      * <请替换成功能描述> <br>

@@ -61,6 +61,16 @@ public class DateUtils {
 		}
 		return date;
 	}
+	public static Date formateStringToDateAll(String str) {
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+		Date date =null;
+		try {
+			date = dateFormat.parse(str);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		return date;
+	}
 	
 	public static int getFutureDays(String future) {
 		Date date = new Date();
