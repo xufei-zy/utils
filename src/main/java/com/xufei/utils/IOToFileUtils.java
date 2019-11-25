@@ -3,6 +3,7 @@ import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -12,6 +13,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.RandomAccessFile;
 import java.io.Reader;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -139,7 +141,7 @@ public class IOToFileUtils {
     public static List<String> readFileByCharsList(String fileName){
     	File file = new File(fileName);
     	Reader reader = null;
-    	List<String> strList =new ArrayList<>();
+    	 List<String> strList = new ArrayList<>();
     	try{
     		System.out.println("以字符为单位读取文件内容，一次读取一个字符：");
     		//一次读取一个字符
@@ -225,15 +227,15 @@ public class IOToFileUtils {
         }
     }
     
-    public static List<String> readFileByLinesList(String fileName){
-    	File file = new File(fileName);
+    public static List<String> readFileByLinesListFiles(File file){
+    	//File file = new File(fileName);
     	BufferedReader reader = null;
-    	List<String> strList=new ArrayList<>();
+    	List<String> strList = new ArrayList<>();
     	try{
     		System.out.println("以行为单位读取文件内容，一次读取一整行：");
     		reader = new BufferedReader(new FileReader(file));
     		String tempString = null;
-    		int line = 1;
+    		//int line = 1;
     		//一次读入一行，直到读入null为文件结束
     		while((tempString = reader.readLine())!=null){
     			//显示行号
@@ -245,10 +247,55 @@ public class IOToFileUtils {
     	}catch(Exception e){
     		e.printStackTrace();
     	}
-		return strList;
+    	return strList;
+    }
+    public static List<String> readFileByLinesList(String fileName){
+    	File file = new File(fileName);
+    	BufferedReader reader = null;
+    	List<String> strList = new ArrayList<>();
+    	try{
+    		System.out.println("以行为单位读取文件内容，一次读取一整行：");
+    		reader = new BufferedReader(new FileReader(file));
+    		String tempString = null;
+    		//int line = 1;
+    		//一次读入一行，直到读入null为文件结束
+    		while((tempString = reader.readLine())!=null){
+    			//显示行号
+    			//System.out.println("line "+line+":"+tempString);
+    			strList.add(tempString);
+    			//line++;
+    		}
+    		reader.close();
+    	}catch(Exception e){
+    		e.printStackTrace();
+    	}
+    	return strList;
+    }
+    
+    //一次读取整个文件
+    public String readToString(String fileName) {  
+        String encoding = "UTF-8";  
+        File file = new File(fileName);  
+        Long filelength = file.length();  
+        byte[] filecontent = new byte[filelength.intValue()];  
+        try {  
+            FileInputStream in = new FileInputStream(file);  
+            in.read(filecontent);  
+            in.close();  
+        } catch (FileNotFoundException e) {  
+            e.printStackTrace();  
+        } catch (IOException e) {  
+            e.printStackTrace();  
+        }  
+        try {  
+            return new String(filecontent, encoding);  
+        } catch (UnsupportedEncodingException e) {  
+            System.err.println("The OS does not support " + encoding);  
+            e.printStackTrace();  
+            return null;  
+        }  
     }
 
-    
     /**
      * 随机读取文件内容
      * <请替换成功能描述> <br>
